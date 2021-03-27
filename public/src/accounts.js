@@ -9,35 +9,45 @@ return accounts.sort((lastName1, lastName2) => lastName1.name.last < lastName2.n
 }
 
 function getTotalNumberOfBorrows(account, books) {
-  let total = 0;
-  books.forEach((book) => {
-    const isBookOut = book.borrows;
-    isBookOut.forEach((borrowed) => {
-    if (borrowed.id === account.id) {
-      total += 1;
-    }
-  });
-  });
+  const total = books.reduce((total, book) => {
+    const borrowedBooks = book.borrows.filter((borrow) => {
+      return borrow.id === account.id;
+    });
+
+    return total += borrowedBooks.length;
+  }, 0);
   return total;
 }
 
+/* 
+Original solution, which also works.
+function getTotalNumberOfBorrows(account, books) {
+   let total = 0;
+   books.forEach((book) => {
+     const isBookOut = book.borrows;
+     isBookOut.forEach((borrowed) => {
+     if (borrowed.id === account.id) {
+       total += 1;
+       }
+     });
+   });
+   return total;
+}
+*/
+
 function getBooksPossessedByAccount(account, books, authors) {
   const borrowedBooks = [];
-
   books.forEach((book) => {
     let bookBorrows = book.borrows;
-
     bookBorrows.forEach((borrow) => {
       if (borrow.id === account.id && !borrow.returned) {
         borrowedBooks.push(book);
       }
     });
   });
-
   let result = borrowedBooks.map((book) => {
     return { ...book, author: getAuthor(book, authors) };
   });
-
   return result;
 }
 

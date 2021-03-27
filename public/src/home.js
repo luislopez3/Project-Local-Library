@@ -3,15 +3,11 @@
 const { findBookById, findAuthorById } = require("./books");
 
 function getTotalBooksCount(books) {
-  let sum = 0;
-  books.forEach(book => sum += 1);
-  return sum;
+  return books.length;
 }
 
 function getTotalAccountsCount(accounts) {
-  let sum = 0;
-  accounts.forEach(account => sum += 1);
-  return sum;
+  return accounts.length;
 }
 
 function getBooksBorrowedCount(books) {
@@ -21,11 +17,12 @@ function getBooksBorrowedCount(books) {
     isBookOut.forEach((borrowed) => {
     if (borrowed.returned === false) {
       total += 1;
-    }
-  });
+      }
+    });
   });
   return total;
 }
+
 
 // Helper function to parse the top five results of the next three functions.
 function topFive(input) {
